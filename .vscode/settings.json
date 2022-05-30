@@ -1,0 +1,9 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/2e7f7ce7-60b9-47dc-ae6c-07d980558d42/resourceGroups/Amadeus-Hackathon-TestEnv/providers/Microsoft.Web/sites/hackahton-dummy-app-front",
+    "appService.deploySubpath": "dist\\flight-booking-frontend",
+    "appService.showBuildDuringDeployPrompt": true,
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ]
+}

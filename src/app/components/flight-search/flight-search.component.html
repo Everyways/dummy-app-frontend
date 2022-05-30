@@ -1,0 +1,155 @@
+<!-- <app-recommendation class="m-3" 
+    [origin]="origin" 
+    [destination]="destination"
+    [flightTemplate]="flightTemplate"></app-recommendation> -->
+
+<div *ngIf="bAirQuality">
+    <div class="container">
+        <!-- <div class="d-flex flex-row">
+            <div class="border border-dark">
+                <img
+                    src="https://tiles.breezometer.com/v1/air-quality/breezometer-aqi/current-conditions/2/1/1.png?key=abd387362b5a4100b969f651209f464c&breezometer_aqi_color=red_green" />
+            </div>
+            <div class="p-2 border border-dark">
+                <h2 style="color: {{airQualityColor}}">According to Breezometer, the air quality at {{
+                    destination.iataCode }} is {{ airQualityCategory }},
+                    the
+                    dominant polluant actually is <strong>{{ airQualityDominantPolluant }}</strong></h2>
+            </div>
+        </div> -->
+    </div>
+    <div id="destination">
+        {{ destinationMap }}
+    </div>
+</div>
+<h1>Find flights around the world for <span class="text-success fw-bold"><i>{{FlavorDestService.choosenDest.name}}</i></span></h1>
+
+<hr>
+<form>
+    <div *ngIf="fromLocationTemplate">
+        <label for="">
+            <h3>From:</h3>
+        </label>
+        <input type="text" class="form-control" name="from" [(ngModel)]="from" (keypress)="handleFromLocation()">
+        <small>Airport search E.g. Paris</small>
+        <div [ngClass]="Location.subType == 'AIRPORT' ? 'card mb-3 mt-3 border border-success': 'card mb-3 mt-3'"
+            *ngFor="let Location of fromLocation" (click)="handleOrigin(Location)">
+            <div class="card-header"><b>Name:</b> {{ Location.name }}</div>
+            <div class="card-body">City Name: {{ Location.address.cityName }}
+                <br>
+                Country Name: {{ Location.address.countryName }}
+            </div>
+            <div class="card-footer"><b>SubType:</b> {{ Location.subType }}</div>
+        </div>
+    </div>
+
+    <!-- <div *ngIf="toLocationTemplate">
+        <label for="">
+            <h3>To:</h3>
+        </label>
+        <input type="text" class="form-control" name="to" [(ngModel)]="to" (keypress)="handleToLocation()">
+        <small>Airport search E.g. Miami</small>
+        <div [ngClass]="Location.subType == 'AIRPORT' ? 'card mb-3 mt-3 border border-success': 'card mb-3 mt-3'"
+            *ngFor="let Location of toLocation" (click)="handleDestination(Location)">
+            <div class="card-header"><b>Name:</b> {{ Location.name }}</div>
+            <div class="card-body">City Name: {{ Location.address.cityName }}
+                <br>
+                Country Name: {{ Location.address.countryName }}
+            </div>
+            <div class="card-footer"><b>SubType:</b> {{ Location.subType }}</div>
+        </div>
+    </div> -->
+    <div *ngIf="departureDateTemplate">
+        <label for="">
+            <h3>Departure Date:</h3>
+        </label>
+        <input type="date" class="form-control" name="date" [(ngModel)]="date">
+        <br>
+        <button class="btn btn-secondary" (click)="onFindFlight()" [ngStyle]="{'width': '100%'}">Find Flights</button>
+    </div>
+    <div *ngIf="flightTemplate">
+        <h3>Flight Offers:</h3>
+        <div class="card mb-3 mt-3" *ngFor="let flight of flights">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col">
+                        <div>
+                            <b>Price: </b>
+                            <span>{{ flight.price.total }} ({{ flight.price.currency }})</span>
+                        </div>
+                        <div>
+                            <b>GreenMiles earned: </b>
+                            <span class="text-success">{{ greenMilesEarned }}</span>
+                        </div>
+                        <div>
+                            <b>Extra GreenMiles :</b>
+                            <span class="text-success">{{ extraGreenMiles }}</span>
+                            <br/>
+                            <span><i class="text-muted">(if travel has minimum impact on your annual CO2e emmission)</i></span>
+                            
+                        </div>
+                        <div>
+                            <b>Total GreenMiles : </b>
+                            <span class="text-success fw-bolder">{{ totalGreenMiles }}</span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <b>Possible aircrafts for this flight: </b>
+                        <ul *ngFor="let aircraft of aircrafts | keyvalue">
+                            <li><a target="_blank" rel="noopener"
+                                    href="https://www.airbus.com/en/sustainability/environment/environmental-responsibility">{{aircraft.value}}
+                                </a></li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="col-12 {{scoreColor}}">
+                    <h6>
+                        <i>
+                            According to <strong>Goclimate.com</strong> this trip will produce about {{
+                            aircraftFootprint | number }}
+                            kgs CO2e,
+                            which represent around <strong>{{ footprintStat |number:'1.0-0' }} % of your annual CO2e
+                                emissions</strong>.
+                        </i>
+                    </h6>
+                </div>
+            </div>
+            <div class="card-body">
+                Number of Seats Available: {{ flight.numberOfBookableSeats }}
+                <br>
+                Last Ticketing Date: {{ flight.lastTicketingDate }}
+                <hr>
+                <h5>Itineraries</h5>
+                Duration: {{ flight.itineraries[0].duration }}
+                <p *ngFor="let i of flight.itineraries[0].segments">
+                    <strong>Departure:</strong> {{ i.departure.iataCode }} <strong>at</strong> {{ i.departure.at }}
+                    <em>(Terminal: {{ i.departure.terminal }})</em>
+                    &nbsp;
+                    <strong>Arrival:</strong> {{ i.arrival.iataCode }} <strong>at</strong> {{ i.arrival.at }}
+                    <em>(Terminal: {{ i.arrival.terminal }})</em>
+                    &nbsp;
+                    <strong>Number of stops:</strong> {{ i.numberOfStops }}
+                </p>
+                <hr>
+                <h5>Enter your details:</h5>
+                <input type="text" name="first" placeholder="Your first Name" [(ngModel)]="first" class="form-control">
+                <br>
+                <input type="text" name="last" placeholder="Your Last Name" [(ngModel)]="last" class="form-control">
+            </div>
+            <div class="card-footer">
+                <a href="https://pdt.payment.amadeus.com/checkout/ui/index.html?PPID=DQM1GKGR1MTXJGBI9OFO7CRZE7XDWCHO"
+                    class="btn btn-warning btn-lg active" role="button" aria-pressed="true"
+                    [ngStyle]="{'width': '100%'}" target="_blank">Book a flight for {{ distance |number:'1.0-0' }}
+                    kilometers !</a>
+                <!-- <button class="btn btn-warning" (click)="onBookFlight(flight)"
+                    ></button> -->
+            </div>
+        </div>
+    </div>
+    <div *ngIf="booked">
+        <div class="alert alert-success" role="alert">
+            Successfully Booked the flight
+        </div>
+    </div>
+</form>

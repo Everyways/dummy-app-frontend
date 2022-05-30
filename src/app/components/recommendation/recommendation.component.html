@@ -1,0 +1,34 @@
+<div *ngIf="flightTemplate">
+    <div *ngIf="picture">
+        <img src="{{picture}}" />
+    </div>
+    <p>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+            aria-expanded="false" aria-controls="collapseExample">
+            Recommended locations at destination
+        </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card mb-3 mt-3" *ngFor="let recommandation of recommandations">
+            <div class="card-header">
+                <b>{{recommandation.name}}:</b>
+                <picture>
+                    <source srcset="../../../assets/{{recommandation.category}}.png" type="image/png" style="max-width: 25px;" class="float-right" >
+                    <source srcset="../../../assets/{{recommandation.category}}.webp" type="image/webp" style="max-width: 25px;" class="float-right"> 
+                    <img src="../../../assets/{{recommandation.category}}.png" type="image/png" style="max-width: 25px;" class="float-right">
+                  </picture>
+            </div>
+            <div class="card-body">Tags: {{recommandation.category | json}}
+            </div>
+            <div class="card-footer">
+                <b>EcoScore:
+                  <img src="../../../assets/star.png" style="max-width:2%;" class="m-1"/>
+                  <img src="../../../assets/star.png" style="max-width:2%;" class="m-1"/>
+                  <img src="../../../assets/star.png" style="max-width:2%;" class="m-1"/>
+                  <img src="../../../assets/star.png" style="max-width:2%;" class="m-1"/>
+                  <img src="../../../assets/star.png" style="max-width:2%;" class="m-1"/>
+                </b>
+            </div>
+        </div>
+    </div>
+</div>

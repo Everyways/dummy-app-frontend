@@ -1,0 +1,152 @@
+<div class="container m-5">
+    <div *ngIf="welcomeTemplate">
+        <div>
+            <h1 class="text-success fw-bold">Welcome to your <i>destination recommander</i></h1>
+            
+                <h2><i>Make your travel choice knowing the current water level of your destination choice </i></h2>
+                <p>and earn green miles by choosing a destination that will be the less impacted by traveller</p>
+            <div class="col-md-12 text-center">
+                <button type="button" class="btn btn-success m-5" (click)="startChoice()">
+                    <strong><i>Let's travel greener</i></strong>
+                </button>
+            </div>
+            <div >
+                <h2 class="text-success">Key messages</h2>
+                <h5>GreenScore</h5>
+                <p>The data displayed in this dashboard is sourced from the <strong>SDG Index and Dashboards Cities Report</strong> (https://euro-cities.sdgindex.org/#/).
+                    The report was prepared by the Sustainable Development Solutions Network and the Brabant Center for Sustainable Development.
+                </p>
+                <h5>Drought</h5>
+                <p>
+                    Drought is a prolonged dry period in the natural climate cylce that can occur anywhere in the
+                    world.
+                    It is a slow on-set phenomenon caused by a lack of rainfall. Compounding factors, such as
+                    poverty
+                    and inappropriate land use, increase vulnerability to drought.</p>
+                <p>When drought causes water and food shortages, there can be many impacts on the health of the
+                    population, which may increase morbidity and result in death.</p>
+                <p>In the last two decades alone, the United Nations estimates drought has affected 1.5 billion
+                    people
+                    and led to economic losses of at least $124 billion. Water conservation has never been more
+                    crucial.
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- step1 -->
+    <div *ngIf="flavorTemplate">
+        <h1 class="m-5">Choose your travel <span class="text-success fw-bold"><i>flavor</i></span>:</h1>
+        <form [formGroup]="userForm" (ngSubmit)="handleFlavor()">
+            <div class="row">
+                <div class="col m-2">
+                    <div>
+                        <h3>Beach</h3>
+                    </div>
+                    <input id="{{this.FlavorDestService.flavorBeach}}" type="radio"
+                        value="{{this.FlavorDestService.flavorBeach}}" name="flavorDest" formControlName="flavorDest"
+                        autocomplete="off" class="btn-check">
+                    <label for="{{this.FlavorDestService.flavorBeach}}">
+                        <picture>
+                            <source srcset="../../../assets/{{this.FlavorDestService.flavorBeach}}.webp" type="image/webp" class="btn btn-secondary" style="max-width: 219px;" class="img-fluid"> 
+                            <source srcset="../../../assets/{{this.FlavorDestService.flavorBeach}}.jpg" type="image/jpg" class="btn btn-secondary" style="max-width: 219px;" class="img-fluid" >
+                            <img src="../../../assets/{{this.FlavorDestService.flavorBeach}}.jpg" type="image/jpg"  class="btn btn-secondary" style="max-width: 219px;" class="img-fluid">
+                        </picture>
+                    </label>
+                </div>
+                <div class="col m-2">
+                    <div>
+                        <h3>Nature</h3>
+                    </div>
+                    <input id="{{this.FlavorDestService.flavorNature}}" type="radio"
+                        value="{{this.FlavorDestService.flavorNature}}" name="flavorDest" formControlName="flavorDest"
+                        autocomplete="off" class="btn-check">
+                    <label for="{{this.FlavorDestService.flavorNature}}">
+                        <picture>
+                            <source srcset="../../../assets/{{this.FlavorDestService.flavorNature}}.webp" type="image/webp" class="btn btn-secondary" style="max-width: 219px;" class="img-fluid"> 
+                            <source srcset="../../../assets/{{this.FlavorDestService.flavorNature}}.jpg" type="image/jpg" class="btn btn-secondary" style="max-width: 219px;" class="img-fluid" >
+                            <img src="../../../assets/{{this.FlavorDestService.flavorNature}}.jpg" type="image/jpg" class="btn btn-secondary" style="max-width: 219px;" class="img-fluid">
+                        </picture>
+                    </label>
+                </div>
+                <div class="col m-2">
+                    <div>
+                        <h3>City</h3>
+                    </div>
+                    <input id="{{this.FlavorDestService.flavorCity}}" type="radio"
+                        value="{{this.FlavorDestService.flavorCity}}" name="flavorDest" formControlName="flavorDest"
+                        autocomplete="off" class="btn-check">
+                    <label for="{{this.FlavorDestService.flavorCity}}">
+                        <picture>
+                            <source srcset="../../../assets/{{this.FlavorDestService.flavorCity}}.webp" type="image/webp" class="btn btn-secondary" style="max-width: 219px;" class="img-fluid"> 
+                            <source srcset="../../../assets/{{this.FlavorDestService.flavorCity}}.jpg"type="image/jpg"  class="btn btn-secondary" style="max-width: 219px;" class="img-fluid" >
+                            <img src="../../../assets/{{this.FlavorDestService.flavorCity}}.jpg" type="image/jpg" class="btn btn-secondary" style="max-width: 219px;" class="img-fluid">
+                        </picture>
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-success btn-lg">Submit</button>
+            </div>
+        </form>
+    </div>
+    <!-- step2 -->
+    <div *ngIf="flavorDestTemplate">
+        <h1 class="m-5">Choose your <strong class="text-success fw-bold"><i>{{FlavorDestService.flavorUser}}</i></strong> destination:</h1>
+
+        <div *ngFor="let destChoice of flavorDestChoice; index as i; first as isFirst" class="m-3">
+            <hr />
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-success" (click)="handleChoices(destChoice[0]); storeGreenMiles(destChoice[2].stgScore);">Go to
+                        <strong><i>{{destChoice[0].name}}</i></strong>
+                    </button>
+                </div>
+                <div class="col">
+                    <picture>
+                        <source srcset="../../../assets/{{destChoice[0].iataCode}}.webp" type="image/webp" class="btn btn-secondary" style="max-width: 219px;" class="img-fluid"> 
+                        <source srcset="../../../assets/{{destChoice[0].iataCode}}.jpg" type="image/jpg" class="btn btn-secondary" style="max-width: 219px;" class="img-fluid" >
+                        <img src="../../../assets/{{destChoice[0].iataCode}}.jpg" type="image/jpg" class="btn btn-secondary" style="max-width: 219px;" class="img-fluid">
+                    </picture>
+                </div>
+                <div class="col" tyle="max-height: 300px;">
+                    <p><span class="text-success">GreenMiles©</span> earned for this destination</p>
+                    <p class="h1 text-success text-center">{{destChoice[2].stgScore}}</p>
+                    <div class="bottom-0 end-0 align-items-end align-text-bottom">
+                        <button type="button" (click)="openFormModal(destChoice[0])" class="btn btn-warning align-text-bottom">
+                            See current water level in this area
+                        </button>
+                    </div>
+                </div>
+                <div class="col-4 overflow-auto p-3 mb-3 mb-md-0 me-md-3 bg-light" style="max-height: 300px;">
+                    <span *ngIf="!destChoice[1]?.length">No result from Amadeus API</span>
+                    <ul>
+                        <li *ngFor="let destAct of destChoice[1]">
+                            {{destAct.name}} - {{destAct.price.amount}} €</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--form modal-->
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Current water level</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body ">
+                    <div class="embed-responsive">
+                        <img src="../../../assets/{{userDestChoiceDroughtInfo}}" class="img-fluid">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--form modal-->
+</div>
